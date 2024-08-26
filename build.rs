@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 fn main() {
     // Tell cargo to look for shared libraries in the specified directory
-    println!("cargo:rustc-link-search=./");
+    //println!("cargo:rustc-link-search=./:/usr/local/lib:/usr/lib");
 
     // Tell cargo to tell rustc to link the system chdb library.
     println!("cargo:rustc-link-lib=chdb");
