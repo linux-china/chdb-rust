@@ -347,30 +347,6 @@ pub type intmax_t = ::std::os::raw::c_long;
 pub type uintmax_t = ::std::os::raw::c_ulong;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct local_result {
-    pub buf: *mut ::std::os::raw::c_char,
-    pub len: usize,
-    pub _vec: *mut ::std::os::raw::c_void,
-    pub elapsed: f64,
-    pub rows_read: u64,
-    pub bytes_read: u64,
-}
-#[allow(clippy::unnecessary_operation, clippy::identity_op)]
-const _: () = {
-    ["Size of local_result"][::std::mem::size_of::<local_result>() - 48usize];
-    ["Alignment of local_result"][::std::mem::align_of::<local_result>() - 8usize];
-    ["Offset of field: local_result::buf"][::std::mem::offset_of!(local_result, buf) - 0usize];
-    ["Offset of field: local_result::len"][::std::mem::offset_of!(local_result, len) - 8usize];
-    ["Offset of field: local_result::_vec"][::std::mem::offset_of!(local_result, _vec) - 16usize];
-    ["Offset of field: local_result::elapsed"]
-        [::std::mem::offset_of!(local_result, elapsed) - 24usize];
-    ["Offset of field: local_result::rows_read"]
-        [::std::mem::offset_of!(local_result, rows_read) - 32usize];
-    ["Offset of field: local_result::bytes_read"]
-        [::std::mem::offset_of!(local_result, bytes_read) - 40usize];
-};
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
 pub struct local_result_v2 {
     pub buf: *mut ::std::os::raw::c_char,
     pub len: usize,
@@ -399,15 +375,6 @@ const _: () = {
     ["Offset of field: local_result_v2::error_message"]
         [::std::mem::offset_of!(local_result_v2, error_message) - 48usize];
 };
-extern "C" {
-    pub fn query_stable(
-        argc: ::std::os::raw::c_int,
-        argv: *mut *mut ::std::os::raw::c_char,
-    ) -> *mut local_result;
-}
-extern "C" {
-    pub fn free_result(result: *mut local_result);
-}
 extern "C" {
     pub fn query_stable_v2(
         argc: ::std::os::raw::c_int,
