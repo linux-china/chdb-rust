@@ -2,13 +2,15 @@
 
 pub const __WORDSIZE: u32 = 64;
 pub const __has_safe_buffers: u32 = 1;
-pub const __DARWIN_ONLY_64_BIT_INO_T: u32 = 1;
+pub const __DARWIN_ONLY_64_BIT_INO_T: u32 = 0;
 pub const __DARWIN_ONLY_UNIX_CONFORMANCE: u32 = 1;
-pub const __DARWIN_ONLY_VERS_1050: u32 = 1;
+pub const __DARWIN_ONLY_VERS_1050: u32 = 0;
 pub const __DARWIN_UNIX03: u32 = 1;
 pub const __DARWIN_64_BIT_INO_T: u32 = 1;
 pub const __DARWIN_VERS_1050: u32 = 1;
 pub const __DARWIN_NON_CANCELABLE: u32 = 0;
+pub const __DARWIN_SUF_64_BIT_INO_T: &[u8; 9] = b"$INODE64\0";
+pub const __DARWIN_SUF_1050: &[u8; 6] = b"$1050\0";
 pub const __DARWIN_SUF_EXTSN: &[u8; 14] = b"$DARWIN_EXTSN\0";
 pub const __DARWIN_C_ANSI: u32 = 4096;
 pub const __DARWIN_C_FULL: u32 = 900000;
@@ -16,8 +18,6 @@ pub const __DARWIN_C_LEVEL: u32 = 900000;
 pub const __STDC_WANT_LIB_EXT1__: u32 = 1;
 pub const __DARWIN_NO_LONG_LONG: u32 = 0;
 pub const _DARWIN_FEATURE_64_BIT_INODE: u32 = 1;
-pub const _DARWIN_FEATURE_ONLY_64_BIT_INODE: u32 = 1;
-pub const _DARWIN_FEATURE_ONLY_VERS_1050: u32 = 1;
 pub const _DARWIN_FEATURE_ONLY_UNIX_CONFORMANCE: u32 = 1;
 pub const _DARWIN_FEATURE_UNIX_CONFORMANCE: u32 = 3;
 pub const __has_ptrcheck: u32 = 0;
@@ -76,7 +76,7 @@ pub const WINT_MAX: u32 = 2147483647;
 pub const SIG_ATOMIC_MIN: i32 = -2147483648;
 pub const SIG_ATOMIC_MAX: u32 = 2147483647;
 pub type wchar_t = ::std::os::raw::c_int;
-pub type max_align_t = f64;
+pub type max_align_t = u128;
 pub type int_least8_t = i8;
 pub type int_least16_t = i16;
 pub type int_least32_t = i32;
@@ -384,4 +384,25 @@ extern "C" {
 extern "C" {
     pub fn free_result_v2(result: *mut local_result_v2);
 }
-pub type __builtin_va_list = *mut ::std::os::raw::c_char;
+pub type __builtin_va_list = [__va_list_tag; 1usize];
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct __va_list_tag {
+    pub gp_offset: ::std::os::raw::c_uint,
+    pub fp_offset: ::std::os::raw::c_uint,
+    pub overflow_arg_area: *mut ::std::os::raw::c_void,
+    pub reg_save_area: *mut ::std::os::raw::c_void,
+}
+#[allow(clippy::unnecessary_operation, clippy::identity_op)]
+const _: () = {
+    ["Size of __va_list_tag"][::std::mem::size_of::<__va_list_tag>() - 24usize];
+    ["Alignment of __va_list_tag"][::std::mem::align_of::<__va_list_tag>() - 8usize];
+    ["Offset of field: __va_list_tag::gp_offset"]
+        [::std::mem::offset_of!(__va_list_tag, gp_offset) - 0usize];
+    ["Offset of field: __va_list_tag::fp_offset"]
+        [::std::mem::offset_of!(__va_list_tag, fp_offset) - 4usize];
+    ["Offset of field: __va_list_tag::overflow_arg_area"]
+        [::std::mem::offset_of!(__va_list_tag, overflow_arg_area) - 8usize];
+    ["Offset of field: __va_list_tag::reg_save_area"]
+        [::std::mem::offset_of!(__va_list_tag, reg_save_area) - 16usize];
+};
